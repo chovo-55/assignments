@@ -14,6 +14,13 @@ public class ProjectService {
     public void printProjectById(Long index){
         System.out.println(dataStorage.get(index));
     }
+    public void deleteProjectById(Long index){
+        System.out.println(dataStorage.remove(index));
+    }
+    public void updateProject(Long index, Project project){
+        dataStorage.put(index,project);
+    }
+
 
     public void printProjectByName(String name){
         for (Map.Entry<Long,Project> entry : dataStorage.entrySet()){
@@ -23,13 +30,12 @@ public class ProjectService {
         }
     }
 
-    public void printProjectByName(Double price){
+    public void printProjectByPrice(Double price){
         for (Map.Entry<Long,Project> entry : dataStorage.entrySet()){
             if (entry.getValue().getPrice().equals(price)){
                 System.out.println(entry.getValue());
+
             }
         }
     }
-
-
 }
