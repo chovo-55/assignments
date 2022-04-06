@@ -1,0 +1,11 @@
+package SOLID;
+
+public class SOLID {
+    /*
+    - Single Responsibility -> A class should have only one reason to change
+    - Open/Closed -> class should be open for extension but closed for modification
+    - Liskov Substitution -> you should be able to change an instance using a child and code should still work
+    - Interface Segregation -> splitting interfaces to more, so class is not forced to do more work then required
+    - Dependency Inversion -> one should depend on abstraction and not on concrete instances
+    */
+}

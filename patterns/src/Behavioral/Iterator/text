@@ -1,0 +1,4 @@
+lets you traverse elements of a collection without
+exposing its underlying representation (list, stack, tree,...).
+Provide way of accessing elements without accessing the same
+elements over and over so that code can use these elements.
