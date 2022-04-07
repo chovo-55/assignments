@@ -1,8 +1,12 @@
 package Creational.Prototype;
 
-public abstract class Vitamins implements Cloneable {
+public abstract class Vitamin implements Cloneable {
     private Long id;
     protected String type;
+
+    void draw() {
+
+    }
 
     public String getType() {
         return type;

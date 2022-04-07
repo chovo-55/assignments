@@ -4,10 +4,10 @@ public class Main {
     public static void main(String[] args) {
         Cache.loadCache();
 
-        Vitamins clonedVitamins = (Vitamins) Cache.getType(1L);
+        Vitamin clonedVitamins = (Vitamin) Cache.getType(1L);
         System.out.println("Vitamin : " + clonedVitamins.getType());
 
-        Vitamins clonedVitamins2 = (Vitamins) Cache.getType(2L);
+        Vitamin clonedVitamins2 = (Vitamin) Cache.getType(2L);
         System.out.println("Vitamin : " + clonedVitamins2.getType());
     }
 }

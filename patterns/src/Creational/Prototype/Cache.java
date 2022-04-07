@@ -1,13 +1,14 @@
 package Creational.Prototype;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 public class Cache {
-    private static Hashtable<Long, Vitamins> vitaminsMap  = new Hashtable<>();
+    private static Map<Long, Vitamin> vitaminsMap  = new Hashtable<>();
 
-    public static Vitamins getType(Long Id) {
-        Vitamins cachedVitamins = vitaminsMap.get(Id);
-        return (Vitamins) cachedVitamins.clone();
+    public static Vitamin getType(Long Id) {
+        Vitamin cachedVitamins = vitaminsMap.get(Id);
+        return (Vitamin) cachedVitamins.clone();
     }
 
     public static void loadCache() {

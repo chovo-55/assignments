@@ -1,6 +1,6 @@
 package Creational.Prototype;
 
-public class C extends Vitamins {
+public class C extends Vitamin {
     public C(){
         type = "C";
     }
