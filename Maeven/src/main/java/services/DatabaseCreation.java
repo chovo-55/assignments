@@ -13,7 +13,7 @@ public class DatabaseCreation {
         try {
             connection = DriverManager
                     .getConnection("jdbc:postgresql://localhost:8080/",
-                            "postgres", "Creativ-55");
+                            "postgres", "heslo");
             System.out.println("Opened database successfully");
 
             stmt = connection.createStatement();
