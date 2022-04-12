@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class DatabaseCreation {
-
     public void CreateTable() {
 
         Connection connection = null;
