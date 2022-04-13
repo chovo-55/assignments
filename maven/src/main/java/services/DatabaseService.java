@@ -105,43 +105,47 @@ public class DatabaseService {
             stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM "+choice+";" );
 
-            if (choice.equals("COMMON")){
-                while ( rs.next() ) {
-                    int id = rs.getInt("id");
-                    String  name = rs.getString("name");
-                    double area  = rs.getDouble("area");
-                    double  price = rs.getDouble("price");
-                    System.out.print( " | ID = " + id );
-                    System.out.print( " | NAME = " + name );
-                    System.out.print( " | AGE = " + area );
-                    System.out.println( " | PRICE = " + price );
-                }
-            } else if(choice.equals("CUSTOM")){
-                while ( rs.next() ) {
-                    int id = rs.getInt("id");
-                    String  name = rs.getString("name");
-                    double area  = rs.getDouble("area");
-                    double  price = rs.getDouble("price");
-                    String  ht = rs.getString("ht");
-                    String  hs = rs.getString("hs");
-                    System.out.print( " | ID = " + id );
-                    System.out.print( " | NAME = " + name );
-                    System.out.print( " | AGE = " + area );
-                    System.out.print( " | PRICE = " + price );
-                    System.out.print( " | HEATING TYPE = " + ht );
-                    System.out.println( " | HEATING SOURCE = " + hs );
-                }
-            }else if(choice.equals("INTERIOR")){
-                while ( rs.next() ) {
-                    int id = rs.getInt("id");
-                    String  name = rs.getString("name");
-                    double  price = rs.getDouble("price");
-                    String  desc = rs.getString("description");
-                    System.out.print( "ID = " + id );
-                    System.out.print( " | NAME = " + name );
-                    System.out.print( " | PRICE = " + price );
-                    System.out.println( " | DESCRIPTION = " + desc );
-                }
+            switch (choice) {
+                case "COMMON":
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        double area = rs.getDouble("area");
+                        double price = rs.getDouble("price");
+                        System.out.print(" | ID = " + id);
+                        System.out.print(" | NAME = " + name);
+                        System.out.print(" | AGE = " + area);
+                        System.out.println(" | PRICE = " + price);
+                    }
+                    break;
+                case "CUSTOM":
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        double area = rs.getDouble("area");
+                        double price = rs.getDouble("price");
+                        String ht = rs.getString("ht");
+                        String hs = rs.getString("hs");
+                        System.out.print(" | ID = " + id);
+                        System.out.print(" | NAME = " + name);
+                        System.out.print(" | AGE = " + area);
+                        System.out.print(" | PRICE = " + price);
+                        System.out.print(" | HEATING TYPE = " + ht);
+                        System.out.println(" | HEATING SOURCE = " + hs);
+                    }
+                    break;
+                case "INTERIOR":
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        double price = rs.getDouble("price");
+                        String desc = rs.getString("description");
+                        System.out.print("ID = " + id);
+                        System.out.print(" | NAME = " + name);
+                        System.out.print(" | PRICE = " + price);
+                        System.out.println(" | DESCRIPTION = " + desc);
+                    }
+                    break;
             }
             rs.close();
             stmt.close();
