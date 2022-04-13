@@ -2,7 +2,7 @@ package services;
 import java.sql.*;
 
 
-public class ProjectService{
+public class DatabaseService {
     private Connection connection = null;
     private Statement stmt = null;
 
