@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class DatabaseCreation {
+    Connection connection = null;
+    Statement stmt = null;
+
     public void CreateTable() {
 
-        Connection connection = null;
-        Statement stmt = null;
+
         try {
             connection = DriverManager
                     .getConnection("jdbc:postgresql://localhost:8080/",
