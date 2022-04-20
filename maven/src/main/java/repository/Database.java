@@ -1,10 +1,10 @@
-package services;
+package repository;
 
 import java.sql.*;
 import java.util.Optional;
 
 
-public class DatabaseService {
+public class Database {
     private Connection connection;
     private Statement stmt;
 
@@ -51,14 +51,19 @@ public class DatabaseService {
         }
     }
 
-
-    public void insertIntoCommon(int id, String name, double area, double price) {
+    private void close(String sql) {
         try {
-            connection();
-            String sql = "INSERT INTO COMMON (ID,NAME,AREA,PRICE) VALUES (?,?,?,?)";
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            insertion(pstmt, id, name, area, price);
+            stmt.executeUpdate(sql);
+            connection.commit();
+            stmt.close();
+            connection.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
 
+    private void closePstmt(PreparedStatement pstmt) {
+        try {
             pstmt.executeUpdate();
             pstmt.close();
             connection.commit();
@@ -66,50 +71,50 @@ public class DatabaseService {
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("Records created successfully");
     }
 
-    public void insertIntoCustom(int id, String name, double area, double price, String hs, String ht) {
+    public void insertIntoCommon(String choice, int id, String name, double area, double price, String hs, String ht, String desc) {
+        Optional<String> l1 = Optional.ofNullable(hs);
+        Optional<String> l2 = Optional.ofNullable(ht);
+        Optional<String> l3 = Optional.ofNullable(desc);
+
+        String a = l1.orElse("Not Given");
+        String b = l2.orElse("Not Given");
+        String c = l3.orElse("Not Given");
+
+        String sql;
         try {
             connection();
-            String sql = "INSERT INTO CUSTOM (ID,NAME,AREA,PRICE,HEATING_SOURCE, HEATING_TYPE) VALUES (?,?,?,?,?,?)";
+            switch (choice) {
+                case ("COMMON"):
+                    sql = "INSERT INTO COMMON (ID,NAME,AREA,PRICE) VALUES (?,?,?,?)";
+                    PreparedStatement pstmt = connection.prepareStatement(sql);
+                    insertion(pstmt, id, name, area, price);
 
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+                    closePstmt(pstmt);
+                    break;
+                case ("CUSTOM"):
+                    sql = "INSERT INTO CUSTOM (ID,NAME,AREA,PRICE,HEATING_SOURCE, HEATING_TYPE) VALUES (?,?,?,?,?,?)";
+                    pstmt = connection.prepareStatement(sql);
+                    insertion(pstmt, id, name, area, price);
+                    pstmt.setString(5, a);
+                    pstmt.setString(6, b);
 
-            insertion(pstmt, id, name, area, price);
-            pstmt.setString(5, hs);
-            pstmt.setString(6, ht);
-            pstmt.executeUpdate();
-            pstmt.close();
-            connection.commit();
-            connection.close();
+                    closePstmt(pstmt);
+                    break;
+                case ("INTERIOR"):
+                    sql = "INSERT INTO INTERIOR (ID,NAME,AREA,PRICE,DESCRIPTION) VALUES (?,?,?,?,?)";
+                    pstmt = connection.prepareStatement(sql);
+                    insertion(pstmt, id, name, area, price);
+                    pstmt.setString(5, c);
+                    closePstmt(pstmt);
+                    break;
+            }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         System.out.println("Records created successfully");
     }
-
-    public void insertIntoInterior(int id, String name, double area, double price, String desc) {
-        try {
-            connection();
-
-            String sql = "INSERT INTO INTERIOR (ID,NAME,AREA,PRICE,DESCRIPTION) VALUES (?,?,?,?,?)";
-
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-
-            insertion(pstmt, id, name, area, price);
-            pstmt.setString(5, desc);
-
-            pstmt.executeUpdate();
-            pstmt.close();
-            connection.commit();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-        System.out.println("Records created successfully");
-    }
-
 
     public void select(String choice) {
         try {
@@ -146,27 +151,30 @@ public class DatabaseService {
         }
     }
 
-    public void updateCommon(String choice, int id, String name, double area, double price, String hs, String ht, String desc) {
+    public void updateProject(String choice, int id, String name, double area, double price, String hs, String ht, String desc) {
         Optional<String> l1 = Optional.ofNullable(hs);
         Optional<String> l2 = Optional.ofNullable(ht);
         Optional<String> l3 = Optional.ofNullable(desc);
+
+        String a = l1.orElse("Not Given");
+        String b = l2.orElse("Not Given");
+        String c = l3.orElse("Not Given");
         String sql;
         try {
             connection();
             switch (choice) {
                 case ("COMMON"):
                     sql = "UPDATE COMMON SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + " where ID=" + id + ";";
+                    close(sql);
                     break;
                 case ("CUSTOM"):
-                    sql = "UPDATE CUSTOM SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + ", HEATING_SOURCE = '" + l1 + "', HEATING_TYPE = '" + l2 + "' where ID=" + id + ";";
+                    sql = "UPDATE CUSTOM SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + ", HEATING_SOURCE = '" + a + "', HEATING_TYPE = '" + b + "' where ID=" + id + ";";
+                    close(sql);
                     break;
                 case ("INTERIOR"):
-                    sql = "UPDATE INTERIOR SET NAME = '" + name + "', DESCRIPTION = '" + l3 + "', PRICE = " + price + " where ID=" + id + ";";
-
-                    stmt.executeUpdate(sql);
-                    connection.commit();
-                    stmt.close();
-                    connection.close();
+                    sql = "UPDATE INTERIOR SET NAME = '" + name + "', DESCRIPTION = '" + c + "', PRICE = " + price + " where ID=" + id + ";";
+                    close(sql);
+                    break;
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -174,67 +182,13 @@ public class DatabaseService {
         System.out.println("Operation done successfully");
     }
 
-    public void updateCustom(int id, String name, double area, double price, String hs, String ht) {
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:8080/",
-                    "postgres", "heslo");
-            connection.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
-            stmt = connection.createStatement();
-            String sql = "UPDATE COMMON SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + ", HEATING_SOURCE = '" + hs + "', HEATING_TYPE = '" + ht + "' where ID=" + id + ";";
-            stmt.executeUpdate(sql);
-            connection.commit();
-            stmt.close();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Operation done successfully");
-    }
-
-    public void updateInterior(int id, String name, String desc, double price) {
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:8080/",
-                    "postgres", "heslo");
-            connection.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
-            stmt = connection.createStatement();
-            String sql = "UPDATE COMMON SET NAME = '" + name + "', DESCRIPTION = '" + desc + "', PRICE = " + price + " where ID=" + id + ";";
-            stmt.executeUpdate(sql);
-            connection.commit();
-            stmt.close();
-            connection.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Operation done successfully");
-    }
-
     public void delete(String type, int id) {
         try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:8080/",
-                            "postgres", "heslo");
-            connection.setAutoCommit(false);
-            System.out.println("Opened database successfully");
-
-            stmt = connection.createStatement();
+            connection();
             String sql = "DELETE from " + type + " where ID = " + id + ";";
-            stmt.executeUpdate(sql);
-            connection.commit();
-
-            stmt.close();
-            connection.close();
+            close(sql);
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
         System.out.println("Operation done successfully");
     }
