@@ -163,18 +163,18 @@ public class Database {
         try {
             connection();
             switch (choice) {
-                case ("COMMON"):
+                case ("COMMON") -> {
                     sql = "UPDATE COMMON SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + " where ID=" + id + ";";
                     close(sql);
-                    break;
-                case ("CUSTOM"):
+                }
+                case ("CUSTOM") -> {
                     sql = "UPDATE CUSTOM SET NAME = '" + name + "', AREA = " + area + ", PRICE = " + price + ", HEATING_SOURCE = '" + a + "', HEATING_TYPE = '" + b + "' where ID=" + id + ";";
                     close(sql);
-                    break;
-                case ("INTERIOR"):
+                }
+                case ("INTERIOR") -> {
                     sql = "UPDATE INTERIOR SET NAME = '" + name + "', DESCRIPTION = '" + c + "', PRICE = " + price + " where ID=" + id + ";";
                     close(sql);
-                    break;
+                }
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
