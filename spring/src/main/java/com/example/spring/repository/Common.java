@@ -5,10 +5,10 @@ import java.time.LocalDate;
 
 @Entity
 
-        public class Common extends Project {
+public class Common extends Project {
     protected Double area;
 
-    public Common( String name, Double price, LocalDate date, Double area) {
+    public Common(String name, Double price, LocalDate date, Double area) {
         super(name, price, date);
         this.name = name;
         this.price = price;
