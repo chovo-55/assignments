@@ -1,7 +1,9 @@
-package com.example.spring.service;
+package com.example.spring.web;
 
-import com.example.spring.repository.Common;
-import com.example.spring.repository.Project;
+import com.example.spring.entities.Common;
+import com.example.spring.entities.Project;
+import com.example.spring.service.IProjectService;
+import com.example.spring.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +13,10 @@ import java.util.List;
 @RequestMapping
 public class ProjectController {
 
-    private final ProjectService projectService;
+    private final IProjectService projectService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(IProjectService projectService) {
         this.projectService = projectService;
     }
 
@@ -34,11 +36,10 @@ public class ProjectController {
         projectService.deleteCommon(projectId);
     }
 
-    @PutMapping(path = "projectId")
+    @PutMapping(path = "{projectId}")
     public void updateCommon(
         @PathVariable("projectId") Long projectId,
         @PathVariable( required = false) String name){
-        projectService.updateCommonName(projectId,name);
     }
 
     /*@DeleteMapping(path = "{projectId}")
@@ -55,9 +56,10 @@ public class ProjectController {
     public void registerNewCustom(@RequestBody Custom custom){
         projectService.addNewCustom(custom);
     }
+    */
 
     @PostMapping
-    public void registerNewInterior(@RequestBody Interior interior){
-        projectService.addNewInterior(interior);
-    }*/
+    public void registerNewInterior(@RequestBody Project project) {
+        projectService.addProject(project);
+    }
 }

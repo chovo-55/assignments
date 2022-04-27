@@ -1,18 +1,18 @@
 package com.example.spring.service;
 
-import com.example.spring.repository.Common;
-import com.example.spring.repository.Project;
+import com.example.spring.entities.Common;
+import com.example.spring.entities.Project;
+import com.example.spring.exceptions.ProjectAlreadyExistsException;
 import com.example.spring.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProjectService {
+public class ProjectService implements IProjectService {
 
     private final ProjectRepository projectRepository;
 
@@ -26,28 +26,34 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public void saveCheck(Project project, Optional var) {
-        if (var.isPresent()) {
-            throw new IllegalStateException("taken");
+    @Override
+    public void addProject(Project project) {
+        projectRepository.save(project);
+    }
+
+    @Override
+    public void saveCheck(Project project, Optional commonProjectName) {
+        if (commonProjectName.isPresent()) {
+            throw new ProjectAlreadyExistsException("Project with provided name already exists");
         }
         projectRepository.save(project);
     }
 
-    public void deleteCommon(Long projectId){
+    @Override
+    public void deleteCommon(Long projectId) {
         boolean exists = projectRepository.existsById(projectId);
-        if (!exists){
-            throw new IllegalStateException("does not exists!");
+        if (!exists) {
+            throw new IllegalStateException("Does not exists!");
         }
         projectRepository.deleteById(projectId);
     }
 
+    @Override
     public void addNewCommon(Common common) {
-        Optional<Common> commonByName = projectRepository.commonFindByName(common.getName());
-        saveCheck(common, commonByName);
+        Optional<Common> commonProjectName = projectRepository.commonFindByName(common.getName());
+        saveCheck(common, commonProjectName);
     }
 
-    public void updateCommonName(Long projectId, String name) {
-    }
 
     /*public void addNewCustom(Custom custom) {
         Optional<Custom> customFindByName = projectRepository.customFindByName(custom.getName());

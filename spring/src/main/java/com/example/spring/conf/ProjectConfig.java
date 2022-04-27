@@ -1,5 +1,9 @@
-package com.example.spring.repository;
+package com.example.spring.conf;
 
+import com.example.spring.entities.Common;
+import com.example.spring.entities.Custom;
+import com.example.spring.entities.Project;
+import com.example.spring.repository.ProjectRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

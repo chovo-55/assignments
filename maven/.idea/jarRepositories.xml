@@ -8,8 +8,23 @@
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="http://cdrsrvbuild.cdrator.internal:8081/nexus/content/groups/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="cdrator-repo-releases" />
+      <option name="name" value="cdrator-repo-releases" />
+      <option name="url" value="http://cdrsrvbuild.cdrator.internal:8081/nexus/content/groups/public" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="cdrator-repo-snapshots" />
+      <option name="name" value="cdrator-repo-snapshots" />
+      <option name="url" value="http://cdrsrvbuild.cdrator.internal:8081/nexus/content/groups/public-snapshots" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="jboss.community" />
